@@ -11,7 +11,7 @@ st.set_page_config(page_title="Procer Campo - Logística", page_icon="📡", lay
 ARQUIVO_JSON = 'estoque.json'
 ARQUIVO_HISTORICO = 'historico.json'
 # Use o nome do arquivo da logo que está na sua pasta raiz
-LOGO_PATH = "simbolo-procer-colorido-1.png" 
+LOGO_PATH = "procertecnologia_logo.jpeg" 
 
 # 2. Funções de Persistência
 def carregar_dados(arquivo, padrao=[]):
@@ -50,7 +50,7 @@ if perfil == "Administrador (Carlos)":
 col_logo, col_titulo, col_id = st.columns([1.2, 5, 2.5])
 with col_logo:
     try:
-        st.image(LOGO_PATH, width=100)
+        st.image(LOGO_PATH, = "procertecnologia_logo.jpeg")
     except:
         st.write("📡")
 
