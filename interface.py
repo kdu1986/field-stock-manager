@@ -7,32 +7,36 @@ from datetime import datetime
 # 1. Configurações Iniciais do Streamlit
 st.set_page_config(page_title="Procer Campo - Logística", page_icon="📡", layout="wide")
 
-# Caminhos Simplificados (Considerando que tudo está na mesma pasta raiz)
+# Caminhos Simplificados (Considerando que tudo está na mesma pasta raiz no GitHub)
 ARQUIVO_JSON = 'estoque.json'
 ARQUIVO_HISTORICO = 'historico.json'
-# Use o nome do arquivo da logo que está na sua pasta raiz
 LOGO_PATH = "procertecnologia_logo.jpeg" 
 
 # 2. Funções de Persistência
 def carregar_dados(arquivo, padrao=[]):
     try:
-        if not os.path.exists(arquivo): return padrao
+        if not os.path.exists(arquivo): 
+            return padrao
         with open(arquivo, 'r', encoding='utf-8-sig') as f:
             dados = json.load(f)
+            # Normalização de categorias
             for d in dados:
                 if d.get('categoria') == 'Telemetria':
                     d['categoria'] = 'Termometria'
             return dados
-    except: return padrao
+    except Exception: 
+        return padrao
 
 def salvar_dados(arquivo, dados):
-    # Salva diretamente no arquivo (sem referenciar pasta pai)
     with open(arquivo, 'w', encoding='utf-8-sig') as f:
         json.dump(dados, f, indent=4, ensure_ascii=False)
 
 # 3. Sidebar e Controle de Acesso
 try:
-    st.sidebar.image(LOGO_PATH, width=120)
+    if os.path.exists(LOGO_PATH):
+        st.sidebar.image(LOGO_PATH, width=120)
+    else:
+        st.sidebar.write("📡")
 except:
     st.sidebar.write("📡")
 
@@ -45,12 +49,15 @@ if perfil == "Administrador (Carlos)":
     if senha == "admin":
         auth = True
         st.sidebar.success("Autenticado")
+    elif senha:
+        st.sidebar.error("Senha incorreta")
 
 # 4. Cabeçalho Corporativo
 col_logo, col_titulo, col_id = st.columns([1.2, 5, 2.5])
 with col_logo:
     try:
-        st.image(LOGO_PATH, = "procertecnologia_logo.jpeg")
+        # CORREÇÃO REALIZADA AQUI (Removido o '=' solto)
+        st.image(LOGO_PATH, width=100)
     except:
         st.write("📡")
 
@@ -101,27 +108,31 @@ if auth:
             if st.form_submit_button("Adicionar"):
                 dados.append({"descricao": n_desc, "qtd": n_qtd, "categoria": n_cat})
                 salvar_dados(ARQUIVO_JSON, dados)
+                st.success("Item adicionado!")
                 st.rerun()
 
     with aba_hist:
         if historico:
             st.dataframe(pd.DataFrame(historico)[::-1], use_container_width=True)
+        else:
+            st.info("Nenhum registro no histórico.")
 
-# 6. Exibição da Tabela Geral
+# 6. Exibição da Tabela Geral (Sempre visível)
 st.markdown("### 📋 Inventário Atual")
 if dados:
     df_view = pd.DataFrame(dados)
     st.dataframe(df_view, use_container_width=True, hide_index=True)
     
-    # Alertas Críticos
+    # Alertas Críticos de Estoque
     if 'qtd' in df_view.columns:
         alertas = df_view[df_view['qtd'] <= 2]
         if not alertas.empty:
-            with st.expander("⚠️ ESTOQUE BAIXO", expanded=True):
+            with st.expander("⚠️ ITENS COM ESTOQUE CRÍTICO", expanded=True):
                 for _, r in alertas.iterrows():
-                    st.write(f"- **{r['descricao']}**: {r['qtd']} unidades.")
+                    st.write(f"- **{r['descricao']}**: Restam apenas {r['qtd']} unidades.")
 else:
     st.info("O inventário está vazio.")
-    if st.button("Inicializar com Item de Exemplo"):
-        salvar_dados(ARQUIVO_JSON, [{"descricao": "EQUIPAMENTO TESTE", "qtd": 5, "categoria": "Infraestrutura"}])
-        st.rerun()
+    if auth: # Só o administrador pode inicializar dados
+        if st.button("Inicializar com Item de Exemplo"):
+            salvar_dados(ARQUIVO_JSON, [{"descricao": "MÓDULO CERES TESTE", "qtd": 5, "categoria": "Módulos Ceres"}])
+            st.rerun()
