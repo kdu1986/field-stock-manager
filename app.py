@@ -1,41 +1,42 @@
 import streamlit as st
 import json
 
-# Configuração da página - Identidade Visual Procer
+# Configuração de Interface SOC/Procer
 st.set_page_config(page_title="Procer - Estoque de Campo", layout="wide")
 
 def carregar_estoque():
     try:
         with open('estoque.json', 'r', encoding='utf-8') as f:
             return json.load(f)
-    except FileNotFoundError:
+    except:
         return []
 
-# Interface Visual do Sistema
-st.title("📦 Gerenciador de Estoque de Campo - PROCER")
+# Título do Sistema
+st.title("📦 Gerenciador de Estoque de Campo")
 st.write("---")
 
 estoque = carregar_estoque()
 
 if not estoque:
-    st.warning("⚠️ Arquivo estoque.json não encontrado ou vazio no servidor.")
+    st.error("❌ Arquivo 'estoque.json' não encontrado no servidor.")
 else:
-    # Painel de Indicadores (Dashboard)
-    col1, col2 = st.columns(2)
+    # 1. Dashboard de Alertas
     itens_criticos = [i for i in estoque if i['qtd'] <= 2]
-    
-    with col1:
-        st.metric("Total de Itens", len(estoque))
-    with col2:
-        st.metric("Itens com Estoque Baixo", len(itens_criticos))
+    if itens_criticos:
+        st.warning(f"🚨 Existem {len(itens_criticos)} itens com estoque crítico!")
 
-    st.subheader("📋 Inventário Atual")
-    # Exibe a tabela de forma amigável
+    # 2. Área de Baixa de Material (Funcionalidade solicitada)
+    with st.expander("⬇️ Dar baixa em material (Uso em campo)"):
+        item_selecionado = st.selectbox("Selecione o item:", [i['descricao'] for i in estoque])
+        quantidade_usada = st.number_input("Quantidade utilizada:", min_value=1, value=1)
+        
+        if st.button("Confirmar Baixa"):
+            st.success(f"Baixa de {quantidade_usada} un. de '{item_selecionado}' registrada! (Simulação)")
+            # Nota: Para salvar permanentemente no GitHub, precisaríamos de uma API ou Banco de Dados.
+
+    # 3. Tabela de Inventário
+    st.subheader("📋 Inventário do Veículo")
     st.dataframe(estoque, use_container_width=True)
 
-    if itens_criticos:
-        st.error("🚨 **ATENÇÃO: REPOSIÇÃO NECESSÁRIA**")
-        for item in itens_criticos:
-            st.write(f"- {item['descricao']} (Quantidade atual: {item['qtd']})")
-    else:
-        st.success("✅ Todos os componentes de automação estão em níveis seguros no veículo.")
+    if not itens_criticos:
+        st.success("✅ Tudo em dia no carro!")
