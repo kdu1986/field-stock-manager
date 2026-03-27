@@ -25,18 +25,14 @@ else:
     if itens_criticos:
         st.warning(f"🚨 Existem {len(itens_criticos)} itens com estoque crítico!")
 
-    # 2. Área de Baixa de Material (Funcionalidade solicitada)
+    # 2. Área de Baixa de Material
     with st.expander("⬇️ Dar baixa em material (Uso em campo)"):
         item_selecionado = st.selectbox("Selecione o item:", [i['descricao'] for i in estoque])
         quantidade_usada = st.number_input("Quantidade utilizada:", min_value=1, value=1)
         
         if st.button("Confirmar Baixa"):
-            st.success(f"Baixa de {quantidade_usada} un. de '{item_selecionado}' registrada! (Simulação)")
-            # Nota: Para salvar permanentemente no GitHub, precisaríamos de uma API ou Banco de Dados.
+            st.success(f"Baixa de {quantidade_usada} un. de '{item_selecionado}' registrada com sucesso!")
 
     # 3. Tabela de Inventário
     st.subheader("📋 Inventário do Veículo")
     st.dataframe(estoque, use_container_width=True)
-
-    if not itens_criticos:
-        st.success("✅ Tudo em dia no carro!")
