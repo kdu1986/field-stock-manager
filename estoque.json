@@ -1,22 +1,37 @@
 [
-    {
-        "descricao": "Sensor de Termometria Digital",
-        "qtd": 15,
-        "categoria": "Termometria"
-    },
-    {
-        "descricao": "Contatora de Potência 24V",
-        "qtd": 2,
-        "categoria": "Elétrica"
-    },
-    {
-        "descricao": "Módulo Ceres-Control",
-        "qtd": 1,
-        "categoria": "Automação"
-    },
-    {
-        "descricao": "Cabo de Rede Blindado (m)",
-        "qtd": 50,
-        "categoria": "Redes"
-    }
+  {
+    "descricao": "EQUIPAMENTO CERES-PAR12 (TERMOMETRIA)",
+    "qtd": 1,
+    "categoria": "Termometria"
+  },
+  {
+    "descricao": "CAIXA PLASTICA SOBREPOR SILO MONTADA (EHD20 V2)",
+    "qtd": 2,
+    "categoria": "Automação"
+  },
+  {
+    "descricao": "PLUVIOMETRO STD",
+    "qtd": 1,
+    "categoria": "Automação"
+  },
+  {
+    "descricao": "CABO SENSOR TERMOMETRIA (METROS)",
+    "qtd": 100,
+    "categoria": "Termometria"
+  },
+  {
+    "descricao": "CONTATORA 24V DC (COMANDO)",
+    "qtd": 4,
+    "categoria": "Elétrica"
+  },
+  {
+    "descricao": "DISJUNTOR MOTOR 10-16A",
+    "qtd": 2,
+    "categoria": "Elétrica"
+  },
+  {
+    "descricao": "FONTE CHAVEADA 24V 5A",
+    "qtd": 1,
+    "categoria": "Elétrica"
+  }
 ]
