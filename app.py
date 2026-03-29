@@ -1,19 +1,17 @@
 import streamlit as st
-import json
+from streamlit_gsheets import GSheetsConnection
 
-# 🛡️ Configuração de Interface SOC/Procer
-st.set_page_config(page_title="Procer - Estoque de Campo", layout="centered")
+# 🛡️ Configuração de Interface
+st.set_page_config(page_title="Procer - Estoque Realtime", layout="centered")
 
-def carregar_estoque():
-    try:
-        # Abre com utf-8-sig para ignorar caracteres invisíveis do Windows
-        with open('estoque.json', 'r', encoding='utf-8-sig') as f:
-            return json.load(f)
-    except Exception as e:
-        return []
+# --- CONEXÃO COM O BANCO (GOOGLE SHEETS) ---
+conn = st.connection("gsheets", type=GSheetsConnection)
+
+def carregar_dados():
+    # ttl=0 garante que ele sempre pegue o dado mais novo da planilha
+    return conn.read(worksheet="estoque", ttl=0)
 
 # --- CABEÇALHO ---
-# Tenta carregar a logo da Procer se o arquivo existir no seu GitHub
 try:
     st.image("procertecnologia_logo.jpeg", width=250)
 except:
@@ -21,36 +19,37 @@ except:
 
 st.write("---")
 
-estoque = carregar_estoque()
+# Interface Principal
+try:
+    df = carregar_dados()
 
-if not estoque:
-    st.error("❌ Erro de Integridade: Arquivo 'estoque.json' não encontrado ou corrompido.")
-else:
-    # --- ALERTAS DE CAMPO ---
-    itens_criticos = [i for i in estoque if i['qtd'] <= 1]
-    if itens_criticos:
-        st.warning(f"🚨 Atenção: {len(itens_criticos)} itens com estoque crítico!")
+    # Tabela de Inventário
+    st.subheader("📋 Inventário do Veículo (Sincronizado)")
+    st.dataframe(df, hide_index=True, use_container_width=True)
 
-    # --- TABELA DE INVENTÁRIO (LAYOUT AJUSTADO) ---
-    st.subheader("📋 Inventário do Veículo")
-    
-    col_config = {
-        "descricao": st.column_config.TextColumn("Descrição", width="large"),
-        "qtd": st.column_config.NumberColumn("Qtd", width="small"),
-        "categoria": st.column_config.TextColumn("Categoria", width="medium"),
-    }
-
-    st.dataframe(
-        estoque, 
-        column_config=col_config, 
-        hide_index=True, 
-        use_container_width=True
-    )
-
-    # --- ÁREA DE BAIXA (INTERATIVO) ---
+    # Área de Baixa
     st.write("---")
-    with st.expander("⬇️ Registrar Uso de Material em Cliente"):
-        item_selecionado = st.selectbox("Selecione o material utilizado:", [i['descricao'] for i in estoque])
-        if st.button("Confirmar Baixa no Sistema"):
-            st.success(f"Baixa de '{item_selecionado}' registrada com sucesso!")
-            st.info("Sincronize com o servidor para persistir a alteração.")
+    with st.expander("⬇️ Registrar Uso de Material"):
+        with st.form("baixa_form"):
+            item_sel = st.selectbox("Selecione o item:", df['descricao'].tolist())
+            qtd_baixa = st.number_input("Quantidade utilizada:", min_value=1, value=1)
+            btn_confirmar = st.form_submit_button("Confirmar Baixa na Planilha")
+
+            if btn_confirmar:
+                # Localiza e atualiza
+                idx = df.index[df['descricao'] == item_sel].tolist()[0]
+                if df.at[idx, 'qtd'] >= qtd_baixa:
+                    df.at[idx, 'qtd'] -= qtd_baixa
+                    
+                    # SALVA DE VOLTA NO GOOGLE SHEETS
+                    conn.update(worksheet="estoque", data=df)
+                    
+                    st.success(f"✅ Baixa de {item_sel} realizada com sucesso!")
+                    st.balloons()
+                    st.rerun()
+                else:
+                    st.error("❌ Erro: Estoque insuficiente na planilha!")
+
+except Exception as e:
+    st.error("⚠️ Erro de Conexão: Verifique se o link nos Secrets está correto.")
+    st.info("Certifique-se de que a planilha está compartilhada como 'Editor'.")
