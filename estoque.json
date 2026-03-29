@@ -1,107 +1,22 @@
 ﻿[
     {
-        "descricao": "ANTENA RF 433 MHZ, BASE MAGNETICA, CABO DE 3 METROS",
-        "qtd": 2,
-        "categoria": "Comunicacao RF"
-    },
-    {
-        "descricao": "ANTENA RF 433 MHZ, BASE MAGNETICA, CABO DE 1 METRO",
-        "qtd": 3,
-        "categoria": "Comunicacao RF"
-    },
-    {
-        "descricao": "BLOCO DE CONTATO SCHNEIDER",
-        "qtd": 8,
-        "categoria": "Eletrica"
-    },
-    {
-        "descricao": "CAIXA PLASTICA SOBREPOR SILO MONTADA (EHD20 V2)",
-        "qtd": 0,
-        "categoria": "Infraestrutura"
-    },
-    {
-        "descricao": "CHAVE SELETORA A 3 POSICOES 2NA MANOPLA",
-        "qtd": 12,
-        "categoria": "Eletrica"
-    },
-    {
-        "descricao": "DISJUNTOR BIPOLAR 10A, CURVA C",
-        "qtd": 5,
-        "categoria": "Protecao"
-    },
-    {
-        "descricao": "EQUIPAMENTO CERES-CONTROL V2",
-        "qtd": 3,
-        "categoria": "Modulos Ceres"
-    },
-    {
-        "descricao": "EQUIPAMENTO CERES-EHD20 V2",
-        "qtd": 2,
-        "categoria": "Modulos Ceres"
-    },
-    {
-        "descricao": "EQUIPAMENTO CERES-PAR12 (TERMOMETRIA)",
-        "qtd": 0,
-        "categoria": "Modulos Ceres"
-    },
-    {
-        "descricao": "EQUIPAMENTO CERES-UCW V3",
-        "qtd": 2,
-        "categoria": "Modulos Ceres"
-    },
-    {
-        "descricao": "EQUIPAMENTO CERES-WMS30 (ESTACAO METEOROLOGICA)",
-        "qtd": 4,
-        "categoria": "Telemetria"
-    },
-    {
-        "descricao": "EXTENSAO CABO COAXIAL RG-58 7 METROS",
-        "qtd": 1,
-        "categoria": "Comunicacao RF"
-    },
-    {
-        "descricao": "FONTE 12VDC LINEAR",
-        "qtd": 2,
-        "categoria": "Fontes"
-    },
-    {
-        "descricao": "FONTE CHAVEADA 12VDC INDUSTRIAL",
-        "qtd": 10,
-        "categoria": "Fontes"
-    },
-    {
-        "descricao": "PLUVIOMETRO STD",
-        "qtd": 0,
-        "categoria": "Telemetria"
-    },
-    {
-        "descricao": "RELE INDUSTRIAL SLIM",
-        "qtd": 9,
-        "categoria": "Eletrica"
-    },
-    {
-        "descricao": "SENSOR DE CORRENTE",
-        "qtd": 9,
-        "categoria": "Sensores"
-    },
-    {
-        "descricao": "SENSOR TEMP-UR% PARA ESTACAO METEOROLOGICA",
-        "qtd": 3,
-        "categoria": "Telemetria"
-    },
-    {
-        "descricao": "TOMADA ENERGIA FEMEA P/ TRILHO DIN",
-        "qtd": 5,
-        "categoria": "Eletrica"
-    },
-    {
-        "descricao": "EQUIPAMENTO CERES-PAR12 (TERMOMETRIA)",
-        "qtd": 1,
+        "descricao": "Sensor de Termometria Digital",
+        "qtd": 15,
         "categoria": "Termometria"
     },
     {
-        "descricao": "EQUIPAMENTO CERES-PAR12 (TERMOMETRIA)",
+        "descricao": "Contatora de Potência 24V",
+        "qtd": 2,
+        "categoria": "Elétrica"
+    },
+    {
+        "descricao": "Módulo Ceres-Control",
         "qtd": 1,
-        "categoria": "Termometria"
+        "categoria": "Automação"
+    },
+    {
+        "descricao": "Cabo de Rede Blindado (m)",
+        "qtd": 50,
+        "categoria": "Redes"
     }
 ]
