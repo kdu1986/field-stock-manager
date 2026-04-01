@@ -1,4 +1,3 @@
 streamlit
 pandas
-openpyxl
-requests
+st-gsheets-connection
